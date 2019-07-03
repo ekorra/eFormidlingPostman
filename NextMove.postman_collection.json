@@ -1,0 +1,123 @@
+{
+	"info": {
+		"_postman_id": "f3caa6d0-f0ed-4894-a1fd-40de97ab3d20",
+		"name": "NextMove",
+		"description": "Samplemessages for interacting with the NextMove REST service on the integrasjonspunkt - eFormidling",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "DPI digital melding",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2dd4acf5-4815-4bf8-bb1f-b3565068261e",
+						"exec": [
+							"var moment = require('moment')",
+							"pm.variables.set(\"virkningsdato\", moment().format('YYYY-DD-MM'))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "2fa8848f-462b-4e3e-9844-423b9f423431",
+						"exec": [
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "sbd",
+							"value": "{\n  \"standardBusinessDocumentHeader\": {\n    \"headerVersion\": \"1.0\",\n    \"sender\": [\n      {\n        \"identifier\": {\n          \"authority\": \"iso6523-actorid-upis\",\n          \"value\": \"0192:910076787\"\n        }\n      }\n    ],\n    \"receiver\": [\n      {\n        \"identifier\": {\n          \"authority\": \"iso6523-actorid-upis\",\n          \"value\": \"06068700602\"\n        }\n      }\n    ],\n    \"documentIdentification\": {\n      \"standard\": \"urn:no:difi:digitalpost:xsd:digital::digital\",\n      \"typeVersion\": \"2.0\",\n      \"instanceIdentifier\": \"9ae40195-37f1-450e-9df7-a526b556ca19\",\n      \"type\": \"digital\",\n      \"creationDateAndTime\": \"2019-07-02T15:05:04.7960494+02:00\"\n    },\n    \"businessScope\": {\n      \"scope\": [\n        {\n          \"type\": \"ConversationId\",\n          \"instanceIdentifier\": \"{{$guid}}\",\n          \"identifier\": \"urn:no:difi:profile:digitalpost:info:ver1.0\",\n          \"scopeInformation\": [\n            {\n              \"requestingDocumentCreationDateTimeSpecified\": false,\n              \"ExpectedResponseDateTimeSpecified\": false\n            }\n          ]\n        },\n        {\n          \"type\": \"SenderRef\",\n          \"instanceIdentifier\": \"6bccf6fd-ac39-419c-bcf1-92bb45bec6c2\",\n          \"identifier\": \"AvsenderSystem\"\n        },\n        {\n          \"type\": \"ReceiverRef\",\n          \"instanceIdentifier\": \"a7800d1f-b1a1-4712-8b07-b2e378c9a4ee\",\n          \"identifier\": \"MottakerSystem\"\n        }\n      ]\n    }\n  },\n  \"digital\": {\n    \"sikkerhetsnivaa\": \"3\",\n    \"hoveddokument\": \"test.pdf\",\n    \"tittel\": \"tittel\",\n    \"spraak\": \"NO\",\n    \"digitalPostInfo\": {\n      \"aapningskvittering\": \"false\",\n      \"virkningsdato\": \"{{virkningsdato}}\"\n    },\n    \"varsler\": {\n      \"epostTekst\": \"ePost varsel\",\n      \"smsTekst\": \"SMS varsel\"\n    }\n  }\n}",
+							"type": "text"
+						},
+						{
+							"key": "test.pdf",
+							"type": "file",
+							"src": "/C:/temp/nextmove/test.pdf"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9093/api/messages/out/multipart",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9093",
+					"path": [
+						"api",
+						"messages",
+						"out",
+						"multipart"
+					]
+				},
+				"description": "Send digital melding via digital post til innbygger (DPI)"
+			},
+			"response": []
+		},
+		{
+			"name": "einnsyn journalpost",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e08b9903-1f57-4309-8280-1b0e6a8cf8a2",
+						"exec": [
+							"var moment = require('moment')",
+							"pm.variables.set(\"expectedResponse\", moment().add(3, 'hour').toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "sbd",
+							"value": "{\n    \"standardBusinessDocumentHeader\": {\n        \"headerVersion\": \"1.0\",\n        \"receiver\": [\n            {\n                \"identifier\": {\n                    \"authority\": \"iso6523-actorid-upis\",\n                    \"value\": \"0192:810074582\"\n                }\n            }\n        ],\n        \"sender\": [\n            {\n                \"identifier\": {\n                    \"authority\": \"iso6523-actorid-upis\",\n                    \"value\": \"0192:910075918\"\n                }\n            }\n        ],\n        \"documentIdentification\": {\n            \"creationDateAndTime\": \"2016-04-11T15:29:58.753+02:00\",\n            \"instanceIdentifier\": \"ff88849c-e281-4809-8555-7cd54952b916\",\n            \"standard\": \"urn:no:difi:einnsyn:xsd::publisering\",\n            \"type\": \"publisering\",\n            \"typeVersion\": \"2.0\"\n        },\n        \"businessScope\": {\n            \"scope\": [\n                {\n                    \"scopeInformation\": [\n                        {\n                            \"expectedResponseDateTime\": \"{{expectedResponse}}\"\n                        }\n                    ],\n                    \"identifier\": \"urn:no:difi:profile:einnsyn:journalpost:ver1.0\",\n                    \"type\": \"ConversationId\"\n                }\n            ]\n        }\n    },\n    \"publisering\": {\n        \"orgnr\": \"\"\n    }\n}",
+							"type": "text"
+						},
+						{
+							"key": "test.pdf",
+							"type": "file",
+							"src": "/C:/temp/nextmove/test.pdf"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9093/api/messages/out/multipart",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9093",
+					"path": [
+						"api",
+						"messages",
+						"out",
+						"multipart"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
